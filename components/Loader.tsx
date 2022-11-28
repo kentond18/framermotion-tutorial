@@ -16,9 +16,9 @@ const Loader = ({ setLoading }: { setLoading: (val: boolean) => void }) => {
 			>
 				<ImageBlock variants={item} id="image-1" />
 				<motion.div className="transition-image" variants={itemMain}>
-					<Image
+					<motion.img
 						src={`/images/image-2.jpg`}
-						fallback={"/images/image-2.webp"}
+						layoutId="main-image-1"
 						alt="random alt"
 					/>
 				</motion.div>
