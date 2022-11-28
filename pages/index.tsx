@@ -10,10 +10,6 @@ import Loader from "../components/Loader";
 const Index = ({ Component, pageProps }: AppProps) => {
 	const [loading, setLoading] = useState(true);
 
-	// useEffect(() => {
-
-	// }, [loading]);
-
 	return (
 		<div>
 			{loading ? (
