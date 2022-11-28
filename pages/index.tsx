@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
 
 // Components
 import { AppProps } from "next/app";
@@ -7,13 +8,15 @@ import Header from "../components/Header";
 import Image from "../components/Image";
 import Loader from "../components/Loader";
 
-const Index = ({ Component, pageProps }: AppProps) => {
+const Index = () => {
 	const [loading, setLoading] = useState(true);
 
 	return (
-		<div>
+		<AnimatePresence>
 			{loading ? (
-				<Loader setLoading={setLoading} />
+				<motion.div key={"loader"}>
+					<Loader setLoading={setLoading} />
+				</motion.div>
 			) : (
 				<>
 					<Header />
@@ -29,7 +32,7 @@ const Index = ({ Component, pageProps }: AppProps) => {
 					)}
 				</>
 			)}
-		</div>
+		</AnimatePresence>
 	);
 };
 
