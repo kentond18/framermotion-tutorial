@@ -1,28 +1,47 @@
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
+import { banner, letterAnimation } from "../animation/variants";
 
 const Banner = () => {
 	const [playMarquee, setPlayMarquee] = useState(false);
 
 	useEffect(() => {
-		setPlayMarquee(true);
+		setTimeout(() => {
+			setPlayMarquee(true);
+		}, 2000);
 	}, []);
 	return (
-		<div className="banner">
+		<motion.div variants={banner} className="banner">
 			<BannerRowTop title={"brand"} />
 			<BannerRowCenter title={"experience"} playMarquee={playMarquee} />
 			<BannerRowBottom title={"studio"} />
-		</div>
+		</motion.div>
 	);
 };
 
-const AnimatedLetters = ({ title }: { title: string }) => (
-	<span className="row-title">
+const AnimatedLetters = ({
+	title,
+	disabled,
+}: {
+	title: string;
+	disabled?: boolean;
+}) => (
+	<motion.span
+		className="row-title"
+		variants={disabled ? undefined : banner}
+		initial="initial"
+		animate="animate"
+	>
 		{title.split("").map((letter, i) => (
-			<span className="row-letter" key={i}>
+			<motion.span
+				className="row-letter"
+				key={i}
+				variants={disabled ? undefined : letterAnimation}
+			>
 				{letter}
-			</span>
+			</motion.span>
 		))}
-	</span>
+	</motion.span>
 );
 
 const BannerRowTop = ({ title }: { title: string }) => {
@@ -31,12 +50,21 @@ const BannerRowTop = ({ title }: { title: string }) => {
 			<div className="row-col">
 				<AnimatedLetters title={title} />
 			</div>
-			<div className="row-col">
+			<motion.div
+				className="row-col"
+				initial={{ opacity: 0, y: 80 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{
+					ease: "easeInOut",
+					duration: 1,
+					delay: 0.4,
+				}}
+			>
 				<span className="row-message">
 					We are specialised in setting up the foundation of your
 					brand and setting you up for success.
 				</span>
-			</div>
+			</motion.div>
 		</div>
 	);
 };
@@ -44,10 +72,31 @@ const BannerRowTop = ({ title }: { title: string }) => {
 const BannerRowBottom = ({ title }: { title: string }) => {
 	return (
 		<div className={"banner-row center"}>
-			<div className="scroll">
-				<span>scroll</span>
-				<span>down</span>
-			</div>
+			<motion.div
+				className="scroll"
+				initial={{ scale: 0 }}
+				animate={{ scale: 1 }}
+				transition={{
+					ease: [0.6, 0.01, -0.05, 0.95],
+					duration: 1,
+					delay: 1,
+				}}
+			>
+				<motion.span
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ ease: "easeInOut", duration: 1, delay: 1.8 }}
+				>
+					scroll
+				</motion.span>
+				<motion.span
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ ease: "easeInOut", duration: 1, delay: 1.8 }}
+				>
+					down
+				</motion.span>
+			</motion.div>
 			<AnimatedLetters title={title} />
 		</div>
 	);
@@ -63,10 +112,10 @@ const BannerRowCenter = ({
 	return (
 		<div className={`banner-row marquee  ${playMarquee && "animate"}`}>
 			<div className="marquee__inner">
+				<AnimatedLetters title={title} disabled />
 				<AnimatedLetters title={title} />
-				<AnimatedLetters title={title} />
-				<AnimatedLetters title={title} />
-				<AnimatedLetters title={title} />
+				<AnimatedLetters title={title} disabled />
+				<AnimatedLetters title={title} disabled />
 			</div>
 		</div>
 	);
