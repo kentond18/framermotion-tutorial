@@ -1,39 +1,46 @@
-import { useEffect, useState } from "react";
+import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
+import { useState } from "react";
 
 // Components
-import { AppProps } from "next/app";
+import { NextPage } from "next";
 import Banner from "../components/Banner";
 import Header from "../components/Header";
 import Image from "../components/Image";
 import Loader from "../components/Loader";
 
-const Index = ({ Component, pageProps }: AppProps) => {
+const Index: NextPage = () => {
 	const [loading, setLoading] = useState(true);
 
-	// useEffect(() => {
-
-	// }, [loading]);
-
 	return (
-		<div>
-			{loading ? (
-				<Loader setLoading={setLoading} />
-			) : (
-				<>
-					<Header />
-					<Banner />
-					{!loading && (
-						<div className="transition-image final">
-							<Image
-								alt="Transition Image"
-								src={`/images/image-2.jpg`}
-								fallback={`/images/image-2.webp`}
-							/>
-						</div>
+		<>
+			<AnimateSharedLayout>
+				<AnimatePresence>
+					{loading ? (
+						<motion.div key={"loader"}>
+							<Loader setLoading={setLoading} />
+						</motion.div>
+					) : (
+						<>
+							<Header />
+							<Banner />
+							{!loading && (
+								<div className="transition-image final">
+									<motion.img
+										transition={{
+											ease: [0.6, 0.01, -0.05, 0.9],
+											duration: 1.6,
+										}}
+										alt="Transition Image"
+										src={`/images/image-2.jpg`}
+										layoutId="main-image-1"
+									/>
+								</div>
+							)}
+						</>
 					)}
-				</>
-			)}
-		</div>
+				</AnimatePresence>
+			</AnimateSharedLayout>
+		</>
 	);
 };
 
