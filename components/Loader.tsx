@@ -1,4 +1,6 @@
+import { motion, Variants } from "framer-motion";
 import React, { useEffect } from "react";
+import { container, item } from "../animation/variants";
 import Image from "./Image";
 
 const Loader = ({ setLoading }: { setLoading: (val: boolean) => void }) => {
@@ -11,8 +13,14 @@ const Loader = ({ setLoading }: { setLoading: (val: boolean) => void }) => {
 
 	return (
 		<div className="loader">
-			<div className="loader-inner">
-				<ImageBlock id="image-1" />
+			<motion.div
+				className="loader-inner"
+				variants={container}
+				initial="hidden"
+				animate="show"
+				exit="exit"
+			>
+				<ImageBlock variants={item} id="image-1" />
 				<div className="transition-image">
 					<Image
 						src={`/images/image-2.jpg`}
@@ -20,23 +28,29 @@ const Loader = ({ setLoading }: { setLoading: (val: boolean) => void }) => {
 						alt="random alt"
 					/>
 				</div>
-				<ImageBlock id="image-3" />
-				<ImageBlock id="image-4" />
-				<ImageBlock id="image-5" />
-			</div>
+				<ImageBlock variants={item} id="image-3" />
+				<ImageBlock variants={item} id="image-4" />
+				<ImageBlock variants={item} id="image-5" />
+			</motion.div>
 		</div>
 	);
 };
 
-export const ImageBlock = ({ id }: { id: string }) => {
+export const ImageBlock = ({
+	id,
+	variants,
+}: {
+	id: string;
+	variants: Variants;
+}) => {
 	return (
-		<div className={`image-block ${id}`}>
+		<motion.div className={`image-block ${id}`} variants={variants}>
 			<Image
 				src={`/images/${id}.webp`}
 				fallback={`/images/${id}.jpg`}
 				alt={id}
 			/>
-		</div>
+		</motion.div>
 	);
 };
 export default Loader;
